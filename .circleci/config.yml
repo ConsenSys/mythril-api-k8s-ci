@@ -20,7 +20,7 @@ jobs:
           name: Push application Docker image
           command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-            docker tag app "${CIRCLE_SHA1}"
+            docker tag mythril/api-k8s-ci "${CIRCLE_SHA1}"
             docker push "mythril/api-k8s-ci:${CIRCLE_SHA1}"
 
 workflows:
