@@ -1,0 +1,43 @@
+FROM alpine:3.8
+
+ENV KUBECTL_VERSION=v1.12.0
+ENV HELM_VERSION=v2.11.0
+
+RUN wget https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
+  chmod a+x ./kubectl && \
+  mv ./kubectl /usr/local/bin
+
+RUN wget https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz && \
+  tar zxfv helm-${HELM_VERSION}-linux-amd64.tar.gz && \
+  chmod a+x ./linux-amd64/helm && \
+  mv ./linux-amd64/helm /usr/local/bin && \
+  rm -rf ./linux-amd64 helm-${HELM_VERSION}-linux-amd64.tar.gz
+
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator && \
+  chmod a+x ./aws-iam-authenticator && \
+  mv ./aws-iam-authenticator /usr/local/bin
+
+RUN wget https://github.com/roboll/helmfile/releases/download/v0.40.1/helmfile_linux_amd64 && \
+  chmod a+x ./helmfile_linux_amd64 && \
+  mv ./helmfile_linux_amd64 /usr/local/bin/helmfile
+
+RUN wget https://github.com/mozilla/sops/releases/download/3.1.1/sops-3.1.1.linux && \
+  chmod a+x ./ && \
+  mv ./sops-3.1.1.linux /usr/local/bin/sops
+
+RUN apk -Uuv add --update --no-cache \
+  bash\
+  curl \
+  git \
+  gnupg \
+  openssl
+
+ENV HELM_HOME=/root/.helm
+
+RUN mkdir -p $HELM_HOME/plugins
+
+RUN helm plugin install https://github.com/databus23/helm-diff
+
+RUN helm plugin install https://github.com/futuresimple/helm-secrets
+
+COPY ./mythrilKey-cipher.asc /root
