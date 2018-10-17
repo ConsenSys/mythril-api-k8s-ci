@@ -48,3 +48,4 @@ RUN helm plugin install https://github.com/databus23/helm-diff
 RUN helm plugin install https://github.com/futuresimple/helm-secrets
 
 COPY ./mythrilKey-cipher.asc /root
+COPY ./mythrilSecretKey-cipher.asc /root
