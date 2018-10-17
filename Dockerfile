@@ -2,6 +2,7 @@ FROM alpine:3.8
 
 ENV KUBECTL_VERSION=v1.12.0
 ENV HELM_VERSION=v2.11.0
+ENV DOCKER_VERSION=18.06.1
 
 RUN wget https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
   chmod a+x ./kubectl && \
@@ -24,6 +25,12 @@ RUN wget https://github.com/roboll/helmfile/releases/download/v0.40.1/helmfile_l
 RUN wget https://github.com/mozilla/sops/releases/download/3.1.1/sops-3.1.1.linux && \
   chmod a+x ./ && \
   mv ./sops-3.1.1.linux /usr/local/bin/sops
+
+RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}-ce.tgz && \
+  tar zxfv docker-${DOCKER_VERSION}-ce.tgz && \
+  chmod a+x ./docker/docker && \
+  mv ./docker/docker /usr/local/bin && \
+  rm -rf ./docker docker-${DOCKER_VERSION}-ce.tgz
 
 RUN apk -Uuv add --update --no-cache \
   bash\
