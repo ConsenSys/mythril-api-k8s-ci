@@ -37,7 +37,8 @@ RUN apk -Uuv add --update --no-cache \
   curl \
   git \
   gnupg \
-  openssl
+  openssl \
+  socat
 
 ENV HELM_HOME=/root/.helm
 
