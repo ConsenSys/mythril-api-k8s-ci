@@ -1,3 +1,8 @@
+FROM golang:1.11-alpine3.8 as getter
+
+RUN apk add git && go get -u sigs.k8s.io/kind
+
+
 FROM alpine:3.8
 
 ENV KUBECTL_VERSION=v1.12.0
@@ -50,3 +55,5 @@ RUN helm plugin install https://github.com/futuresimple/helm-secrets
 
 COPY ./mythrilKey-cipher.asc /root
 COPY ./mythrilSecretKey-cipher.asc /root
+
+COPY --from=getter /go/bin/kind /usr/local/bin/kind

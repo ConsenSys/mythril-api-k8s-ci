@@ -10,3 +10,8 @@ jobs:
           name: Build application Docker image
           command: |
             docker build -t mythril/api-k8s-ci .
+
+            if [ ! -z "$CIRCLE_TAG" ]; then
+              docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+              docker push mythril/api-k8s-ci:${CIRCLE_TAG}
+            fi
