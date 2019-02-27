@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build -t mythril/api-k8s-ci .
+            docker build -t mythril/api-k8s-ci:${CIRCLE_SHA1} .
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
             docker push mythril/api-k8s-ci:${CIRCLE_SHA1}
 
