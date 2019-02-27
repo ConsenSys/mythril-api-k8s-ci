@@ -11,7 +11,7 @@ jobs:
           command: |
             docker build -t mythril/api-k8s-ci .
 
-  build:
+  publish:
     docker:
       - image: docker:18.06.1-ce-git
     steps:
