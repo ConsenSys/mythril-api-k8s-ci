@@ -10,6 +10,8 @@ jobs:
           name: Build application Docker image
           command: |
             docker build -t mythril/api-k8s-ci .
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+            docker push mythril/api-k8s-ci:${CIRCLE_SHA1}
 
   publish:
     docker:
@@ -21,6 +23,8 @@ jobs:
           name: Push Docker image
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+            docker pull mythril/api-k8s-ci:${CIRCLE_SHA1}
+            docker tag mythril/api-k8s-ci:${CIRCLE_SHA1} mythril/api-k8s-ci:${CIRCLE_TAG}
             docker push mythril/api-k8s-ci:${CIRCLE_TAG}
 
 workflows:
