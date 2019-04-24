@@ -3,7 +3,7 @@ FROM golang:1.11-alpine3.8 as getter
 RUN apk add git && go get -u sigs.k8s.io/kind
 
 
-FROM alpine:3.8
+FROM azuresdk/azure-cli-python
 
 ENV KUBECTL_VERSION=v1.12.0
 ENV HELM_VERSION=v2.11.0
